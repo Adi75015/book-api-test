@@ -7,13 +7,18 @@ import fastify from 'fastify'
 
 const app = fastify({ logger: true })
 
+// on crée une route fastify sur l'URI "/"
+app.get(`/`, async () => {
+    return { text: 'Bienvenue' }
+})
+
 // cette fonction démarre notre server d'api
 const start = async () => {
     console.log('lancement de notre serveur...')
 
     await app.listen(3000)
 
-    console.log('le serveur est lancé, vous pouvez visiter : http://locahost:3000')
+    console.log('le serveur est lancé, vous pouvez visiter : http://localhost:3000')
 }
 // lancement de la fonction de démarrage
 start()
