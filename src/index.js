@@ -14,13 +14,23 @@ app.register(fastifyMongo, {
 })
 
 // on crée une route fastify sur l'URI "/"
-app.get(`/`, async () => {
+app.get('/', async () => {
     return { text: 'Bienvenue' }
 })
 
-// création de la route qui retourne les livres
+
+// On crée une route qui retourne ts les livres de notre BDD (MANGODB)
 app.get('/books', async () => {
-    return []
+    // mangodb est 1 BDD qui contient des collections
+    // c'est un peu comme des tables
+    //ici on récupère notre collection "books"
+    const collection = app.mongo.db.collection('books')
+
+    // sur cette collection, nous pouvons utiliser plusierus fonctions.
+    // Ici, nous allons récupérer tous les livres
+    const books = await collection.find().toArray()
+    // nous retournons ts les livres de la BDD
+    return books
 })
 
 // cette fonction démarre notre server d'api
