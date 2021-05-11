@@ -15,7 +15,7 @@ app.register(fastifyMongo, {
 
 // on crée une route fastify sur l'URI "/"
 app.get('/', async () => {
-    return { text: 'Bienvenue' }
+    return { text: 'Hello Word' }
 })
 
 
