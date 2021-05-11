@@ -33,6 +33,21 @@ app.get('/books', async () => {
     return books
 })
 
+
+// on crée une route qui retourne qu'1 livre par son identifiant
+app.get('/books/:id', async (request) => {
+    // on récupère l'indentifiant que j ai rentré dans notre url
+    const id = request.params.id
+
+    // on récupère notre collection dans mangodb
+    const collection = app.mongo.db.collection('books')
+
+    // on va cherché 1 seul livre par son ID
+    const book = await collection.findOne({ _id: new app.mongo.ObjectId(id) })
+    // on retourne le livre récupéré depuis la BDD
+    return book
+})
+
 // on déclare un shema qui nous permettra de valider les donnees envoyées dans la request POST/books
 const createBookSchema = {
     type: 'object',
