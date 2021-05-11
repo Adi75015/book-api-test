@@ -1,0 +1,16 @@
+GET http://localhost:3000
+###
+GET http://localhost:3000/books
+
+###
+POST http://localhost:3000/books?test=paf=pouf
+content-Type: application/json
+
+{
+    "title":"Le nerf vague",
+    "description":"Comment activer le mode Parasympathique",
+    "price":22,
+    "auteur":"Stephan Porges",
+    "stars":5
+
+}
