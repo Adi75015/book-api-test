@@ -26,11 +26,26 @@ app.get('/books', async () => {
     //ici on récupère notre collection "books"
     const collection = app.mongo.db.collection('books')
 
-    // sur cette collection, nous pouvons utiliser plusierus fonctions.
+    // sur cette collection, nous pouvons utiliser plusieurs fonctions.
     // Ici, nous allons récupérer tous les livres
     const books = await collection.find().toArray()
     // nous retournons ts les livres de la BDD
     return books
+})
+
+// on crée une route qui nous permettra d'ajouter (de créer) un nouveau livre
+app.post('/books', async (request) => {
+    // nous récupérons ttes les données qu'il y a dans le corps de la requete(cela correspond à notre livre)
+    const book = request.body
+
+    // pour enregistrer le livre ds ma BDD , j'ai besoin de la collection
+    const collection = app.mongo.db.collection('books')
+
+    // on enregistre le livre dans la BDD 
+    const result = await collection.insertOne(book)
+
+    // on retourne le livre qui a été enregistré dans la BDD
+    return result.ops[0]
 })
 
 // cette fonction démarre notre server d'api
