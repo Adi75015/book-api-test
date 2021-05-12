@@ -168,6 +168,7 @@ app.post('/books', {
     // données
 
     // on retourne le livre qui a été enregistré dans la BDD
+    reply.status(201)
     return result.ops[0]// tous les documents qui ont été enregistrés dans mangodb
 })
 
@@ -175,9 +176,9 @@ app.post('/books', {
 const start = async () => {
     console.log('lancement de notre serveur...')
 
-    await app.listen(process.env.PORT)
+    await app.listen(process.env.PORT, process.env.HOST)
 
-    console.log('le serveur est lancé, vous pouvez visiter : http://localhost:${process.env.PORT')
+    console.log('le serveur est lancé, vous pouvez visiter : http://${process.env.HOST}:${process.env.PORT}')
 }
 // lancement de la fonction de démarrage
 start()
