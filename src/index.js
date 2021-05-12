@@ -1,7 +1,11 @@
 // on importe la librairie de fastify
 import fastify from 'fastify'
 import fastifyMongo from 'fastify-mongodb'
+import { config } from 'dotenv'
+// initialise les valeurs de configuration (lecture du fichier.env)
+config()
 
+// initialise les valeurs de configuration
 // on crée une application en utilisant fastify
 // l'import de notre librairie: on configure
 // fastify pour afficher les logs
@@ -10,7 +14,7 @@ const app = fastify({ logger: true })
 
 //On connecte la BDD MongoDB
 app.register(fastifyMongo, {
-    url: 'mongodb+srv://MyTodoApp:MyTodoApp@cluster0.obacx.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
+    url: process.env.MONGO_URL
 })
 
 // on crée une route fastify sur l'URI "/"
@@ -168,9 +172,9 @@ app.post('/books', {
 const start = async () => {
     console.log('lancement de notre serveur...')
 
-    await app.listen(3000)
+    await app.listen(process.env.PORT)
 
-    console.log('le serveur est lancé, vous pouvez visiter : http://localhost:3000')
+    console.log('le serveur est lancé, vous pouvez visiter : http://localhost:${process.env.PORT')
 }
 // lancement de la fonction de démarrage
 start()
