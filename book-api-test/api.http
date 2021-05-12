@@ -3,7 +3,9 @@ GET http://localhost:3000
 GET http://localhost:3000/books
 
 ###
-POST http://localhost:3000/books?test=paf=pouf
+GET http://localhost:3000/books/609a8f89d26c33966a76676d
+###
+POST http://localhost:3000/books
 content-Type: application/json
 
 {
@@ -14,3 +16,16 @@ content-Type: application/json
     "stars":5
 
 }
+###
+PATCH http://localhost:3000/books/609a8f89d26c33966a76676d
+content-Type:application/json
+{
+    // mettre ici le champ du livre a mettre a jour
+}
+###
+DELETE http://localhost:3000/books/609a8f89d26c33966a76676d
+Content-Type: application/json
+{
+
+}
+
