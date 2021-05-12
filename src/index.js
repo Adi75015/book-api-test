@@ -42,22 +42,74 @@ app.get('/books/:id', async (request) => {
     // on récupère notre collection dans mangodb
     const collection = app.mongo.db.collection('books')
 
-    // on va cherché 1 seul livre par son ID
-    const book = await collection.findOne({ _id: new app.mongo.ObjectId(id) })
-    // on retourne le livre récupéré depuis la BDD
-    return book
+    // Ici on s'assure de ne pas avoir d'erreur
+    try {
+        // nous récupérons le livre de l'id spécifié dans la route
+        const book = await collection.findOne({ _id: new app.mongo.ObjectId(id) })
+        // on retourne le livre récupéré depuis la BDD
+        // si il n' a pas de livre, nous levons une erreur
+        if (!book) {
+            throw new Error('this books does not exist')
+        }
+        // si tout s'est bien passé, on retourne le livre
+        return book
+    } catch (error) {
+        // ici, si la moindre erreur est survenu à l'intérieur du block try, nous éxecutons le code suivant
+        // on change le status cide par 404 (Not Found)
+        reply.status(404)
+
+        // on retourne le message de l'erreur
+        return { error: error.message }
+    }
 })
+
 
 // Mise à jour d'un livre
 app.patch('/books/:id', async (request) => {
     // Pour mettre à jour un livre avec MongoDB
     // il faut utiliser : await collection.updateOne({ _id: new app.mongo.ObjectId(id) }, nouveauLivre)
+    const id = request.params.id
+    const updateFields = request.body
+    // Pour mettre à jour un livre avec MongoDB
+    // il faut utiliser : await collection.updateOne({ _id: new app.mongo.ObjectId(id) }, nouveauLivre)
+    const collection = app.mongo.db.collection('books')
+
+    // Nous mettons le livre avec l'identifiant donnée
+    // en luis spécifiant les champs à changer en
+    // second argument
+    await collection.updateOne(
+        // Ici on spécifie des "Query" qui nous permettent
+        // de définir le livre à mettre à jour
+        { _id: new app.mongo.ObjectId(id) },
+        // On specifie dans le clefs "$set" les champs à mettre
+        // à jour
+        { $set: updateFields },
+    )
+
+    // On récupére le livre mis à jour dans la base de données
+    const book = await collection.findOne({
+        _id: new app.mongo.ObjectId(id),
+    })
+
+    // On retourne le livre
+    return book
 })
 
 // Suppression d'un livre
 app.delete('/books/:id', async (request) => {
     // Pour supprimer un livre avec MongoDB
     // il faut utiliser : await collection.deleteOne({ _id: new app.mongo.ObjectId(id) })
+    const id = request.params.id
+    // Pour supprimer un livre avec MongoDB
+    // il faut utiliser : await collection.deleteOne({ _id: new app.mongo.ObjectId(id) })
+    const collection = app.mongo.db.collection('books')
+
+    await collection.deleteOne({
+        _id: new app.mongo.ObjectId(id)
+    })
+    reply.status(204)
+
+    return null
 })
 
 
@@ -98,6 +150,15 @@ app.post('/books', {
 
     // on enregistre le livre dans la BDD 
     const result = await collection.insertOne(book)
+    // A l'intérieur de result on as tout les opérations qui ont
+    // étaient enregistré.
+    // Pour accéder à tout ce qui a été enregistré dans la BDD
+    // on utilise result.ops
+    // Ici on as inséré un seul élément, result.ops sera donc
+    // un tableaux avec une seul valeur à l'intérieur: Notre livre.
+
+    // On retourne le livre qui a été enregistré dans la base de
+    // données
 
     // on retourne le livre qui a été enregistré dans la BDD
     return result.ops[0]// tous les documents qui ont été enregistrés dans mangodb

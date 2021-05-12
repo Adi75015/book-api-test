@@ -1,11 +1,12 @@
 GET http://localhost:3000
 ###
+
 GET http://localhost:3000/books
 
 ###
 GET http://localhost:3000/books/609a8f89d26c33966a76676d
 ###
-POST http://localhost:3000/books
+POST http://localhost:3000/books/609a8b53ecaf8b8aa776d70b
 content-Type: application/json
 
 {
@@ -17,15 +18,10 @@ content-Type: application/json
 
 }
 ###
-PATCH http://localhost:3000/books/609a8f89d26c33966a76676d
+PATCH http://localhost:3000/books/609a8b53ecaf8b8aa776d70b
 content-Type:application/json
 {
     // mettre ici le champ du livre a mettre a jour
 }
 ###
 DELETE http://localhost:3000/books/609a8f89d26c33966a76676d
-Content-Type: application/json
-{
-
-}
-
